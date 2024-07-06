@@ -1,0 +1,3 @@
+[submodule "vendor/shared-mime-info"]
+	path = vendor/shared-mime-info
+	url = https://gitlab.freedesktop.org/xdg/shared-mime-info.git
