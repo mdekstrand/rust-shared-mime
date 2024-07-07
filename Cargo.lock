@@ -166,6 +166,12 @@ dependencies = [
 [[package]]
 name = "shared-mime"
 version = "0.1.0"
+dependencies = [
+ "clap",
+ "quick-xml",
+ "serde",
+ "thiserror",
+]
 
 [[package]]
 name = "shared-mime-parser"
