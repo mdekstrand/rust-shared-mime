@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use clap::Parser;
-use shared_mime_parser::parse::parse_mime_package;
+use shared_mime::runtime::parse_mime_package;
 
 #[derive(Parser)]
 #[command()]

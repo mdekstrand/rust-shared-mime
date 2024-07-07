@@ -6,7 +6,7 @@ use std::path::Path;
 use quick_xml::de::{from_reader, DeError};
 use thiserror::Error;
 
-use crate::xdg_mimedef::MimeInfo;
+use super::xdg_mimedef::MimeInfo;
 
 /// Error type for mime-info parse failures.
 #[derive(Error, Debug)]
