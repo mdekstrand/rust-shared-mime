@@ -1,4 +1,10 @@
 //! Types for shared-mime definitions parsed from package files.
+//!
+//! This uses quick-xml and Serde to deserialize the XML package definitions
+//! from the [XDG Shared Mime Info database][xdg].
+//!
+//! [xdg]:
+//!     https://specifications.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
 use serde::Deserialize;
 
 // Shared mime info database.
