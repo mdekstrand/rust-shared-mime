@@ -21,5 +21,6 @@ xdg-runtime = ["quick-xml"]
 cli = ["clap", "xdg-runtime"]
 
 [[bin]]
-name = "shared-mime-rs-test-parse"
+name = "shared-mime-rs"
+path = "src/main.rs"
 required-features = ["cli"]
