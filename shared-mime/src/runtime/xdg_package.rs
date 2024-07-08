@@ -12,6 +12,7 @@ use crate::record::{GlobRule, MimeTypeRecord};
 // Shared mime info database.
 #[derive(Deserialize, Debug, Clone)]
 pub struct MimeInfoPackage {
+    /// The MIME types defined in this package.
     #[serde(rename = "mime-type")]
     pub types: Vec<MimeType>,
 }
@@ -32,12 +33,14 @@ pub struct MimeType {
 pub enum MimeTypeElement {
     Comment(CommentElement),
     Glob(GlobElement),
+    GlobDeleteall,
     SubClassOf(TypeRefElement),
     Alias(TypeRefElement),
     Acronym(String),
     ExpandedAcronym(String),
     GenericIcon,
     Magic,
+    MagicDeleteall,
     Treemagic,
     #[serde(rename = "root-XML")]
     RootXML,

@@ -16,8 +16,25 @@
 //! [SMI]:
 //!     https://specifications.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
 mod dirs;
+pub mod mimeinfo;
 pub mod xdg_package;
 mod xdg_parse;
 
+use std::io;
+
+use quick_xml::DeError;
+use thiserror::Error;
+
 pub use dirs::xdg_mime_search_dirs;
 pub use xdg_parse::parse_mime_package;
+
+/// Error type for mime-info parse failures.
+#[derive(Error, Debug)]
+pub enum XDGError {
+    #[error("I/O error: {0}")]
+    IO(#[from] io::Error),
+    #[error("XML deserialize error: {0}")]
+    Deserialize(#[from] DeError),
+    #[error("layout error: {0}")]
+    Layout(String),
+}
