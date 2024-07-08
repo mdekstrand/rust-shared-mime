@@ -82,6 +82,7 @@ impl CLI {
         let pkg = parse_mime_package(file)?;
         let records = pkg.into_records();
         if self.json {
+            info!("compiling to JSON");
             let mut out: Box<dyn Write> = if let Some(op) = &self.output {
                 Box::new(
                     File::options()
@@ -97,7 +98,18 @@ impl CLI {
                 writeln!(out, "{}", to_string(&rec)?)?;
             }
         } else {
-            error!("cannot output");
+            info!("compiling to compressed binary");
+            let mut out = if let Some(op) = &self.output {
+                File::options()
+                    .write(true)
+                    .create(true)
+                    .truncate(true)
+                    .open(op)?
+            } else {
+                error!("binary format requires -o");
+                exit(2)
+            };
+            postcard::to_io(&records, &mut out)?;
         }
         Ok(())
     }

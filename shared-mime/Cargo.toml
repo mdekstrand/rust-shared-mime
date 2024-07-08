@@ -13,6 +13,7 @@ serde = { version = "^1.0", features = ["derive"] }
 quick-xml = { version = "^0.35", features = ["serialize"], optional = true }
 
 serde_json = { version = "^1.0", optional = true }
+postcard = { version = "^1.0", optional = true, features = ["use-std"] }
 
 # support for CLI tools
 clap = { version = "^4.5", features = ["derive"], optional = true }
@@ -22,8 +23,9 @@ anyhow = { version = "^1", optional = true }
 [features]
 default = ["xdg-runtime"]
 json = ["serde_json"]
+binary = ["postcard"]
 xdg-runtime = ["quick-xml"]
-cli = ["clap", "stderrlog", "anyhow", "xdg-runtime", "json"]
+cli = ["clap", "stderrlog", "anyhow", "xdg-runtime", "json", "binary"]
 
 [[bin]]
 name = "shared-mime-rs"
