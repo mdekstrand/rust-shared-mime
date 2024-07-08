@@ -2,7 +2,7 @@
 name = "shared-mime-embedded"
 version = "0.1.0"
 edition = "2021"
-license = "GPLv2+"
+license = "GPL-2.0-or-later"
 
 [dependencies]
 shared-mime = { version = "0.1.0", path = "../shared-mime", default-features = false }
