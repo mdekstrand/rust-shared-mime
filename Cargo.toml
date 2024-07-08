@@ -1,3 +1,6 @@
 [workspace]
 resolver = "2"
 members = ["shared-mime", "shared-mime-embedded"]
+
+[workspace.dependencies]
+shared-mime = { path = "shared-mime", default-features = false, version = "0.1.0" }
