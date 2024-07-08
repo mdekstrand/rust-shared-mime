@@ -5,7 +5,7 @@ edition = "2021"
 license = "GPLv2+"
 
 [dependencies]
-shared-mime = { default-features = false, path = "../shared-mime" }
+shared-mime = { version = "0.1.0", path = "../shared-mime", default-features = false }
 
 [features]
 xdg-runtime = ["shared-mime/xdg-runtime"]
@@ -13,6 +13,6 @@ xdg-runtime = ["shared-mime/xdg-runtime"]
 [build-dependencies]
 anyhow = "^1.0"
 postcard = { version = "^1.0", features = ["use-std"] }
-shared-mime = { workspace = true, features = [
+shared-mime = { version = "0.1.0", path = "../shared-mime", features = [
   "xdg-runtime",
 ] }
