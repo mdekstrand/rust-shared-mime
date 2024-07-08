@@ -22,3 +22,9 @@ It consists of 3 pieces:
 > The `shared-mime-embedded` package and the FreeDesktop data it embeds are
 > GPL-licensed (v2+). Binaries using the embedded shared MIME data must be
 > GPL-licensed.
+
+## Contributions
+
+The only GPL element is the embedded MIME database; source code is MIT-licensed.
+By submitting code to this repository, you agree to license it under the MIT
+license.
