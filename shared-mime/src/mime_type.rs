@@ -1,4 +1,8 @@
+//! Types representing records in the processed MIME database.
+use serde::{Deserialize, Serialize};
+
 /// A MIME type record from the shared mime database.
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct MimeTypeRecord {
     /// The full MIME type (type/subtype).
     pub name: String,
@@ -13,6 +17,7 @@ pub struct MimeTypeRecord {
 }
 
 /// A glob rule in the database.
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct GlobRule {
     // Glob pattern.
     pub pattern: String,

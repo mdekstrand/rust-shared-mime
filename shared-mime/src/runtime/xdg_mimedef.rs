@@ -27,9 +27,9 @@ pub struct MimeType {
     #[serde(rename = "glob", default)]
     pub globs: Vec<GlobElement>,
     #[serde(rename = "sub-class-of", default)]
-    pub superclasses: Vec<String>,
-    #[serde(rename = "alias", default)]
-    pub aliases: Vec<AliasElement>,
+    pub superclasses: Vec<TypeRefElement>,
+    #[serde(default)]
+    pub aliases: Vec<TypeRefElement>,
 
     pub acronym: Option<String>,
     #[serde(rename = "expanded-acronym")]
@@ -46,6 +46,7 @@ pub struct CommentElement {
     pub value: String,
 }
 
+/// Glob element.
 #[derive(Deserialize, Debug, Clone)]
 pub struct GlobElement {
     #[serde(rename = "@pattern")]
@@ -56,10 +57,17 @@ pub struct GlobElement {
     pub case_sensitive: bool,
 }
 
+/// Element that references another type.
 #[derive(Deserialize, Debug, Clone)]
-pub struct AliasElement {
-    #[serde(rename = "type")]
+pub struct TypeRefElement {
+    #[serde(rename = "@type")]
     pub mimetype: String,
+}
+
+impl MimeInfoPackage {
+    pub fn into_records(self) -> Vec<MimeTypeRecord> {
+        self.types.into_iter().map(|m| m.into()).collect()
+    }
 }
 
 impl From<MimeType> for MimeTypeRecord {
@@ -73,7 +81,7 @@ impl From<MimeType> for MimeTypeRecord {
             name: mime.name,
             description: desc.map(|c| c.value),
             globs: mime.globs.into_iter().map(|g| g.into()).collect(),
-            superclasses: mime.superclasses,
+            superclasses: mime.superclasses.into_iter().map(|a| a.mimetype).collect(),
             aliases: mime.aliases.into_iter().map(|a| a.mimetype).collect(),
         };
     }
