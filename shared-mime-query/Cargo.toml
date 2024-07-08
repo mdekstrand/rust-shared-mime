@@ -1,0 +1,18 @@
+[package]
+name = "shared-mime-query"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+shared-mime = { version = "0.1.0", path = "../shared-mime", default-features = false }
+log = "^0.4"
+
+# serialization
+serde_json = { version = "^1.0", optional = true }
+postcard = { version = "^1.0", optional = true, features = ["use-std"] }
+
+# CLI runtime support
+clap = { version = "^4.5", features = ["derive"] }
+stderrlog = "^0.6"
+anyhow = "^1"
