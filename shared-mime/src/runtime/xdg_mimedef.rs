@@ -7,7 +7,7 @@
 //!     https://specifications.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
 use serde::Deserialize;
 
-use crate::mime_type::{GlobRule, MimeTypeRecord};
+use crate::record::{GlobRule, MimeTypeRecord};
 
 // Shared mime info database.
 #[derive(Deserialize, Debug, Clone)]
