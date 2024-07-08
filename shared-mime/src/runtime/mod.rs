@@ -1,4 +1,5 @@
+mod dirs;
 pub mod xdg_mimedef;
-pub mod xdg_package;
+pub mod xdg_parse;
 
-pub use xdg_package::parse_mime_package;
+pub use xdg_parse::parse_mime_package;
