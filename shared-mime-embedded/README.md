@@ -12,6 +12,11 @@ your program that only uses the locally-installed shared MIME info (e.g. a
 Debian package of a program using `shared-mime` should depend on
 `shared-mime-info` and consult those files, not use an embedded copy).
 
+> [!IMPORTANT]
+> This package, and the shared MIME data it imports, are GPL-licensed (v2+).
+> Binaries using it must be GPL-licensed (even if their source code is under
+> a different, GPL-compatible license such as MIT).
+
 [XDG]: https://gitlab.freedesktop.org/xdg/shared-mime-info
 
 ## Implementation Notes
