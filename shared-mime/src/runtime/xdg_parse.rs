@@ -6,7 +6,7 @@ use std::path::Path;
 use quick_xml::de::{from_reader, DeError};
 use thiserror::Error;
 
-use super::xdg_mimedef::MimeInfoPackage;
+use super::xdg_package::MimeInfoPackage;
 
 /// Error type for mime-info parse failures.
 #[derive(Error, Debug)]
@@ -17,7 +17,7 @@ pub enum ParseError {
     Deserialize(#[from] DeError),
 }
 
-/// Parse a package XML file from the shared mime database.
+/// Parse a single package XML file from the shared mime database.
 pub fn parse_mime_package(path: &Path) -> Result<MimeInfoPackage, ParseError> {
     let file = fs::File::open(path)?;
     let read = io::BufReader::new(file);

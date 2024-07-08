@@ -1,4 +1,9 @@
 //! Types representing records in the processed MIME database.
+//!
+//! These records are an intermediate representation between the parsed shared
+//! mime info files (with [crate::runtime]) and the actual MIME type lookup
+//! structures.  Serializing these records are an effective way to cache parsed
+//! MIME data.
 use serde::{Deserialize, Serialize};
 
 /// A MIME type record from the shared mime database.
