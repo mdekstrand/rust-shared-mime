@@ -15,9 +15,10 @@ It consists of 3 pieces:
     `shared-mime` API with the database initialized with an embedded copy of the
     FreeDesktop mime info database to ease single-binary distribution.
 
-    > [!IMPORTANT]
-    > This package and the FreeDesktop data it embeds are GPL-licensed (v2+). Binaries
-    > using the embedded shared MIME data must be GPL-licensed.
-
 -   [`shared-mime-query`](shared-mime-query), a small tool to query (and debug)
     the shared MIME data and this package's code.
+
+> [!IMPORTANT]
+> The `shared-mime-embedded` package and the FreeDesktop data it embeds are
+> GPL-licensed (v2+). Binaries using the embedded shared MIME data must be
+> GPL-licensed.
