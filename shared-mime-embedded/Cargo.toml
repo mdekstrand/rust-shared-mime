@@ -11,6 +11,8 @@ shared-mime = { version = "0.1.0", workspace = true, default-features = false }
 xdg-runtime = ["shared-mime/xdg-runtime"]
 
 [build-dependencies]
+anyhow = "^1.0"
+postcard = { version = "^1.0", features = ["use-std"] }
 shared-mime = { version = "0.1.0", workspace = true, features = [
   "xdg-runtime",
 ] }

@@ -445,6 +445,8 @@ dependencies = [
 name = "shared-mime-embedded"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "postcard",
  "shared-mime",
 ]
 
