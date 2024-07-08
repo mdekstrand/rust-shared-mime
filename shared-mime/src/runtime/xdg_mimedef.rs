@@ -22,18 +22,25 @@ pub struct MimeType {
     #[serde(rename = "@type")]
     pub name: String,
 
-    #[serde(rename = "comment", default)]
-    pub comments: Vec<CommentElement>,
-    #[serde(rename = "glob", default)]
-    pub globs: Vec<GlobElement>,
-    #[serde(rename = "sub-class-of", default)]
-    pub superclasses: Vec<TypeRefElement>,
-    #[serde(default)]
-    pub aliases: Vec<TypeRefElement>,
+    #[serde(rename = "$value")]
+    pub elements: Vec<MimeTypeElement>,
+}
 
-    pub acronym: Option<String>,
-    #[serde(rename = "expanded-acronym")]
-    pub expanded_acronym: Option<String>,
+/// Element in a MIME definition.
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "kebab-case")]
+pub enum MimeTypeElement {
+    Comment(CommentElement),
+    Glob(GlobElement),
+    SubClassOf(TypeRefElement),
+    Alias(TypeRefElement),
+    Acronym(String),
+    ExpandedAcronym(String),
+    GenericIcon,
+    Magic,
+    Treemagic,
+    #[serde(rename = "root-XML")]
+    RootXML,
 }
 
 /// Comment (description) from the MIME database.
@@ -72,17 +79,45 @@ impl MimeInfoPackage {
 
 impl From<MimeType> for MimeTypeRecord {
     fn from(mime: MimeType) -> Self {
-        let desc = mime.comments.into_iter().find(|c| match &c.lang {
-            None => true,
-            Some(lang) if lang == "en" => true,
-            _ => false,
-        });
         return MimeTypeRecord {
             name: mime.name,
-            description: desc.map(|c| c.value),
-            globs: mime.globs.into_iter().map(|g| g.into()).collect(),
-            superclasses: mime.superclasses.into_iter().map(|a| a.mimetype).collect(),
-            aliases: mime.aliases.into_iter().map(|a| a.mimetype).collect(),
+            description: mime
+                .elements
+                .iter()
+                .filter_map(|e| match e {
+                    MimeTypeElement::Comment(c) => Some(c),
+                    _ => None,
+                })
+                .find(|c| match &c.lang {
+                    None => true,
+                    Some(lang) if lang == "en" => true,
+                    _ => false,
+                })
+                .map(|c| c.value.clone()),
+            globs: mime
+                .elements
+                .iter()
+                .filter_map(|e| match e {
+                    MimeTypeElement::Glob(g) => Some(g.into()),
+                    _ => None,
+                })
+                .collect(),
+            superclasses: mime
+                .elements
+                .iter()
+                .filter_map(|e| match e {
+                    MimeTypeElement::SubClassOf(tr) => Some(tr.mimetype.clone()),
+                    _ => None,
+                })
+                .collect(),
+            aliases: mime
+                .elements
+                .iter()
+                .filter_map(|e| match e {
+                    MimeTypeElement::Alias(tr) => Some(tr.mimetype.clone()),
+                    _ => None,
+                })
+                .collect(),
         };
     }
 }
@@ -91,6 +126,16 @@ impl From<GlobElement> for GlobRule {
     fn from(glob: GlobElement) -> Self {
         return GlobRule {
             pattern: glob.pattern,
+            weight: glob.weight.unwrap_or(50),
+            case_sensitive: glob.case_sensitive,
+        };
+    }
+}
+
+impl From<&GlobElement> for GlobRule {
+    fn from(glob: &GlobElement) -> Self {
+        return GlobRule {
+            pattern: glob.pattern.clone(),
             weight: glob.weight.unwrap_or(50),
             case_sensitive: glob.case_sensitive,
         };
