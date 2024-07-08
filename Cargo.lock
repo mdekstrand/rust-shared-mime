@@ -430,14 +430,9 @@ dependencies = [
 name = "shared-mime"
 version = "0.1.0"
 dependencies = [
- "anyhow",
- "clap",
  "log",
- "postcard",
  "quick-xml",
  "serde",
- "serde_json",
- "stderrlog",
  "thiserror",
 ]
 
