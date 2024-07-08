@@ -15,8 +15,3 @@ quick-xml = { version = "^0.35", features = ["serialize"], optional = true }
 [features]
 default = ["xdg-runtime"]
 xdg-runtime = ["quick-xml"]
-
-[[bin]]
-name = "shared-mime-rs"
-path = "src/main.rs"
-required-features = ["cli"]
