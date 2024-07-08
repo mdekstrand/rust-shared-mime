@@ -2,7 +2,7 @@
 name = "shared-mime"
 version = "0.1.0"
 edition = "2021"
-license = "GPLv2+"
+license = "MIT"
 
 [dependencies]
 thiserror = "^1.0"
