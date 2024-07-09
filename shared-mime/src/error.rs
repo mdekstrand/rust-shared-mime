@@ -8,6 +8,9 @@ pub enum LoadError {
     #[error("XDG load error: {0}")]
     XDG(#[from] crate::runtime::XDGError),
 
+    #[error("MIME database unavailable")]
+    Unavailable,
+
     #[error("load error: {0}")]
     Generic(String),
 }

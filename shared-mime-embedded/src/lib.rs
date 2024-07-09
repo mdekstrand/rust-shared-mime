@@ -6,7 +6,7 @@ use shared_mime::record::MimeTypeRecord;
 #[cfg(feature = "xdg-runtime")]
 use shared_mime::runtime::load_xdg_mime_info;
 use shared_mime::LoadError;
-pub use shared_mime::MimeDB;
+pub use shared_mime::{Answer, MimeDB};
 
 mod data;
 #[cfg(test)]

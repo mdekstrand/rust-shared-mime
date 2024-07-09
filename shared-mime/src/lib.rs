@@ -11,3 +11,20 @@ pub use error::LoadError;
 
 pub use answer::Answer;
 pub use mimedb::MimeDB;
+
+/// Load the MIME database.
+#[cfg(not(feature = "xdg-runtime"))]
+pub fn load_mime_db() -> Result<MimeDB, LoadError> {
+    Err(LoadError::Unavailable)
+}
+
+/// Load the MIME database.
+#[cfg(feature = "xdg-runtime")]
+pub fn load_mime_db() -> Result<MimeDB, LoadError> {
+    use runtime::load_xdg_mime_info;
+
+    let mut db = MimeDB::new();
+    let info = load_xdg_mime_info()?;
+    db.add_shared_mime_info(info);
+    Ok(db)
+}
