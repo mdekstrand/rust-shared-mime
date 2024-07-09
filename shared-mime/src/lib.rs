@@ -3,6 +3,7 @@ pub mod answer;
 pub mod error;
 mod fnmatch;
 pub mod mimedb;
+pub mod query;
 pub mod record;
 #[cfg(feature = "xdg-runtime")]
 pub mod runtime;

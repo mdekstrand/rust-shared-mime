@@ -187,7 +187,7 @@ impl CLI {
         let db = self.load_db()?;
         if let Some(name) = path.file_name() {
             info!("looking up type for {}", path.display());
-            let ans = db.match_filename(name);
+            let ans = db.query_filename(name);
             let all = ans.all_types();
             if let Some(mt) = ans.best() {
                 println!("{}: {}", path.display(), mt);
