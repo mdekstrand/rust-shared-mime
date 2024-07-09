@@ -456,6 +456,7 @@ dependencies = [
  "postcard",
  "serde_json",
  "shared-mime",
+ "shared-mime-embedded",
  "stderrlog",
 ]
 

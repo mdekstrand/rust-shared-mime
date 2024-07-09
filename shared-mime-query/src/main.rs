@@ -11,11 +11,15 @@ use anyhow::Result;
 use clap::{Args, Parser};
 use log::*;
 use serde_json::{to_string, to_writer_pretty};
+use shared_mime::MimeDB;
 use stderrlog::StdErrLog;
 
+use shared_mime::load_mime_db as load_xdg_mime_db;
 use shared_mime::runtime::mimeinfo::load_xdg_mime_info;
 use shared_mime::runtime::parse_mime_package;
 use shared_mime::runtime::xdg_mime_search_dirs;
+#[cfg(feature = "embedded")]
+use shared_mime_embedded::{embedded_mime_db, load_mime_db as load_joint_mime_db};
 
 /// Tools to query MIME data and debug the MIME engine.
 #[derive(Parser)]
@@ -39,6 +43,14 @@ pub struct CLI {
     /// Output JSON where appropriate.
     #[arg(long = "json")]
     json: bool,
+
+    /// Only use the embeded MIME db.
+    #[arg(long = "no-runtime")]
+    no_runtime: bool,
+
+    /// Only use the runtime MIME db (if available).
+    #[arg(long = "no-embedded")]
+    no_embedded: bool,
 }
 
 #[derive(Args)]
@@ -62,6 +74,25 @@ pub struct MIMEActions {
 }
 
 impl CLI {
+    fn load_db(&self) -> Result<MimeDB> {
+        if self.no_embedded && self.no_runtime {
+            warn!("no XDG source specified");
+            return Ok(MimeDB::new());
+        }
+
+        #[cfg(feature = "embedded")]
+        if self.no_runtime {
+            info!("loading embedded MIME database");
+            return Ok(embedded_mime_db());
+        } else if !self.no_embedded {
+            info!("loading joint MIME database");
+            return Ok(load_joint_mime_db()?);
+        }
+
+        info!("loading runtime MIME database");
+        return Ok(load_xdg_mime_db()?);
+    }
+
     fn list_dirs(&self) -> Result<()> {
         for dir in xdg_mime_search_dirs() {
             println!("{}", dir.display());
@@ -149,7 +180,29 @@ impl CLI {
     }
 
     fn type_of(&self, path: &Path) -> Result<()> {
-        todo!()
+        let db = self.load_db()?;
+        if let Some(name) = path.file_name() {
+            info!("looking up type for {}", path.display());
+            let ans = db.match_filename(name);
+            let all = ans.all_types();
+            if let Some(mt) = ans.best() {
+                println!("{}: {}", path.display(), mt);
+                if all.len() > 1 {
+                    info!("file has {} other types", all.len() - 1);
+                }
+            } else if ans.is_unknown() {
+                error!("{}: unknown type", path.display());
+            } else if ans.is_ambiguous() {
+                warn!("{}: ambiguous type", path.display());
+                for mt in all {
+                    println!("{}: {}", path.display(), mt);
+                }
+            }
+            Ok(())
+        } else {
+            error!("{}: path has no filename", path.display());
+            Err(anyhow!("invalid path"))
+        }
     }
 }
 

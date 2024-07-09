@@ -27,12 +27,16 @@ pub fn embedded_mime_db() -> MimeDB {
 /// system, treating the embedded database as a directory of mime information
 /// that preceeds any system information.
 pub fn load_mime_db() -> Result<MimeDB, LoadError> {
-    let mut db = MimeDB::new();
+    debug!("loading embedded MIME database");
+    let mut db = embedded_mime_db();
 
     #[cfg(feature = "xdg-runtime")]
-    match load_xdg_mime_info() {
-        Ok(info) => db.add_shared_mime_info(info),
-        Err(e) => warn!("error loading MIME info: {:?}", e),
+    {
+        debug!("loading runtime MIME database");
+        match load_xdg_mime_info() {
+            Ok(info) => db.add_shared_mime_info(info),
+            Err(e) => warn!("error loading MIME info: {:?}", e),
+        }
     }
 
     Ok(db)

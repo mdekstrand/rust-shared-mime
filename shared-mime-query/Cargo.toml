@@ -5,7 +5,12 @@ edition = "2021"
 license = "MIT OR GPL-2.0-or-later"
 
 [dependencies]
-shared-mime = { version = "0.1.0", path = "../shared-mime", default-features = false }
+shared-mime = { version = "0.1.0", path = "../shared-mime", features = [
+  "xdg-runtime",
+] }
+shared-mime-embedded = { version = "0.1.0", path = "../shared-mime-embedded", optional = true, features = [
+  "xdg-runtime",
+] }
 log = "^0.4"
 
 # serialization
@@ -16,3 +21,7 @@ postcard = { version = "^1.0", features = ["use-std"] }
 clap = { version = "^4.5", features = ["derive"] }
 stderrlog = "^0.6"
 anyhow = "^1"
+
+[features]
+default = ["embedded"]
+embedded = ["shared-mime-embedded"]

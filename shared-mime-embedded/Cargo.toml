@@ -11,6 +11,7 @@ postcard = { version = "^1.0" }
 
 [features]
 xdg-runtime = ["shared-mime/xdg-runtime"]
+default = ["xdg-runtime"]
 
 [build-dependencies]
 anyhow = "^1.0"
