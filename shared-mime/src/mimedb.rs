@@ -114,10 +114,16 @@ impl MimeDB {
 
     /// Query whether one type is a subtype of another.
     pub fn is_subtype(&self, typ: &str, sup: &str) -> bool {
+        // everything is an octet stream
+        if sup == "application/octet-stream" && !typ.starts_with("inode/") {
+            return true;
+        }
         let mut seen = HashSet::new();
         let mut types = vec![typ];
         while let Some(q) = types.pop() {
             if q == sup {
+                return true;
+            } else if sup == "text/plain" && q.starts_with("text/") {
                 return true;
             }
             if let Some(info) = self.type_info.get(q) {

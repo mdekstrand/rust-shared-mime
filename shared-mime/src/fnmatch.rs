@@ -74,7 +74,6 @@ impl MatchRule {
 impl From<&str> for MatchRule {
     fn from(value: &str) -> Self {
         let elts = parse_pattern(value.as_bytes());
-        println!("{:?}", elts);
         match &elts[..] {
             [MatchElement::Literal(lit)] => MatchRule::Literal(lit.clone()),
             [MatchElement::Star, MatchElement::Literal(sfx)] => MatchRule::Suffix(sfx.clone()),
