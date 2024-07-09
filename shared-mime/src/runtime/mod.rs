@@ -26,6 +26,7 @@ use quick_xml::DeError;
 use thiserror::Error;
 
 pub use dirs::xdg_mime_search_dirs;
+pub use mimeinfo::load_xdg_mime_info;
 pub use xdg_parse::parse_mime_package;
 
 /// Error type for mime-info parse failures.

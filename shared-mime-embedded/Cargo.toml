@@ -5,6 +5,7 @@ edition = "2021"
 license = "GPL-2.0-or-later"
 
 [dependencies]
+log = "^0.4"
 shared-mime = { version = "0.1.0", path = "../shared-mime", default-features = false }
 postcard = { version = "^1.0" }
 

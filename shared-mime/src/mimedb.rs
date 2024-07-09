@@ -7,6 +7,8 @@ use std::{
 
 use log::*;
 
+#[cfg(feature = "xdg-runtime")]
+use crate::runtime::mimeinfo::SharedMimeInfo;
 use crate::{answer::Answer, fnmatch::FileMatcher, record::MimeTypeRecord};
 
 /// Hold MIME data and facilitate  file type guessing.
@@ -69,9 +71,19 @@ impl MimeDB {
             let weight = a.weight.cmp(&b.weight).reverse();
             seq.then(weight)
         });
-        self.sequence += 1;
     }
 
+    #[cfg(feature = "xdg-runtime")]
+    pub fn add_shared_mime_info(&mut self, info: SharedMimeInfo) {
+        for dir in info.directories {
+            debug!("adding MIME info from {}", dir.path.display());
+            for pkg in dir.packages {
+                self.add_records(pkg.types);
+            }
+        }
+    }
+
+    /// Look up MIME type information based only on a filename.
     pub fn match_filename<S: AsRef<OsStr>>(&self, path: S) -> Answer<'_> {
         let path = path.as_ref();
         debug!("looking up filename {}", path.to_string_lossy());
@@ -91,6 +103,7 @@ impl MimeDB {
             }
         }
         let mut ambiguous = matches.len() > 1;
+        // TODO: prefer matching literals
         // TODO: disambiguate by match length
         if ambiguous {
             // this is our own addition to the match logic
