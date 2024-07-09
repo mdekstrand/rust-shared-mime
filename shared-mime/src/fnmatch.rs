@@ -57,7 +57,9 @@ impl MatchRule {
     pub fn matches(&self, path: &[u8]) -> bool {
         match self {
             MatchRule::Literal(lit) => lit.eq_ignore_ascii_case(path),
-            MatchRule::Suffix(sfx) => sfx.eq_ignore_ascii_case(&path[path.len() - sfx.len()..]),
+            MatchRule::Suffix(sfx) => {
+                sfx.eq_ignore_ascii_case(&path[path.len().saturating_sub(sfx.len())..])
+            }
             MatchRule::Pattern(pat) => seq_matches(pat, path),
         }
     }

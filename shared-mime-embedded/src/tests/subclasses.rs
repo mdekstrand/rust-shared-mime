@@ -1,4 +1,4 @@
-use super::embedded_mime_db;
+use crate::embedded_mime_db;
 
 #[test]
 fn test_json_subtype() {

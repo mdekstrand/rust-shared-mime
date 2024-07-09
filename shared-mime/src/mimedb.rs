@@ -72,7 +72,8 @@ impl MimeDB {
         self.sequence += 1;
     }
 
-    pub fn match_filename(&self, path: &OsStr) -> Answer<'_> {
+    pub fn match_filename<S: AsRef<OsStr>>(&self, path: S) -> Answer<'_> {
+        let path = path.as_ref();
         debug!("looking up filename {}", path.to_string_lossy());
         let mut sw = None;
         let mut matches = Vec::new();
