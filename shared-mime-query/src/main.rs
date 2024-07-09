@@ -32,9 +32,13 @@ pub struct CLI {
     #[arg(short = 'p', long = "package")]
     pkg_files: Vec<PathBuf>,
 
-    /// Enable verbose diagnostic logging
+    /// Enable verbose diagnostic logging.
     #[arg(short = 'v', long = "verbose", action = clap::ArgAction::Count)]
     verbose: u8,
+
+    /// Suppress informational outputs.
+    #[arg(short = 'q', long = "quiet")]
+    quiet: bool,
 
     /// Specify output file for compilation.
     #[arg(short = 'o', long = "output")]
@@ -209,7 +213,11 @@ impl CLI {
 fn main() -> Result<()> {
     let cli = CLI::parse();
     StdErrLog::new()
-        .verbosity(cli.verbose as usize + 2)
+        .verbosity(if cli.quiet {
+            1
+        } else {
+            cli.verbose as usize + 2
+        })
         .init()
         .expect("log setup error");
 
