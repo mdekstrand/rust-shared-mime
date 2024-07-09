@@ -3,6 +3,8 @@ name = "shared-mime-query"
 version = "0.1.0-alpha1"
 edition = "2021"
 license = "MIT OR GPL-2.0-or-later"
+description = "Shared MIME DB query tool"
+authors = ["Michael Ekstrand <md@ekstrandom.net>"]
 
 [dependencies]
 shared-mime = { version = "0.1.0-alpha1", path = "../shared-mime", features = [

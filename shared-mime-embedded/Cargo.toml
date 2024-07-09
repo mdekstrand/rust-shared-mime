@@ -3,6 +3,8 @@ name = "shared-mime-embedded"
 version = "0.1.0-alpha1"
 edition = "2021"
 license = "GPL-2.0-or-later"
+description = "Embedded copy of FreeDesktop Shared MIME data"
+authors = ["Michael Ekstrand <md@ekstrandom.net>"]
 
 [dependencies]
 log = "^0.4"
