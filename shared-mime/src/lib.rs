@@ -10,10 +10,11 @@ pub mod runtime;
 
 use log::*;
 
-pub use error::LoadError;
+pub use error::{LoadError, QueryError};
 
 pub use answer::Answer;
 pub use mimedb::MimeDB;
+pub use query::FileQuery;
 
 /// Load the MIME database.
 #[cfg(not(feature = "xdg-runtime"))]

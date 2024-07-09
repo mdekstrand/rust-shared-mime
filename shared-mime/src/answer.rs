@@ -5,9 +5,22 @@ pub struct Answer<'a> {
     ambiguous: bool,
 }
 
+impl Answer<'static> {
+    pub(crate) fn unknown() -> Answer<'static> {
+        Self::new(vec![], false)
+    }
+}
+
 impl<'a> Answer<'a> {
     pub(crate) fn new(types: Vec<&'a str>, ambiguous: bool) -> Answer<'a> {
         Answer { types, ambiguous }
+    }
+
+    pub(crate) fn definite(name: &'a str) -> Answer<'a> {
+        Answer {
+            types: vec![name],
+            ambiguous: false,
+        }
     }
 
     /// Query whether this answer is definite (resolved to a single, known type).

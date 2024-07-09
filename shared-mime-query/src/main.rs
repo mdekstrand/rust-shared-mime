@@ -11,6 +11,7 @@ use anyhow::Result;
 use clap::{Args, Parser};
 use log::*;
 use serde_json::{to_string, to_writer_pretty};
+use shared_mime::FileQuery;
 use shared_mime::MimeDB;
 use stderrlog::StdErrLog;
 
@@ -185,28 +186,24 @@ impl CLI {
 
     fn type_of(&self, path: &Path) -> Result<()> {
         let db = self.load_db()?;
-        if let Some(name) = path.file_name() {
-            info!("looking up type for {}", path.display());
-            let ans = db.query_filename(name);
-            let all = ans.all_types();
-            if let Some(mt) = ans.best() {
-                println!("{}: {}", path.display(), mt);
-                if all.len() > 1 {
-                    info!("file has {} other types", all.len() - 1);
-                }
-            } else if ans.is_unknown() {
-                error!("{}: unknown type", path.display());
-            } else if ans.is_ambiguous() {
-                warn!("{}: ambiguous type", path.display());
-                for mt in all {
-                    println!("{}: {}", path.display(), mt);
-                }
+        info!("looking up type for {}", path.display());
+        let query = FileQuery::for_path(path)?;
+        let ans = db.query(&query)?;
+        let all = ans.all_types();
+        if let Some(mt) = ans.best() {
+            println!("{}: {}", path.display(), mt);
+            if all.len() > 1 {
+                info!("file has {} other types", all.len() - 1);
             }
-            Ok(())
-        } else {
-            error!("{}: path has no filename", path.display());
-            Err(anyhow!("invalid path"))
+        } else if ans.is_unknown() {
+            error!("{}: unknown type", path.display());
+        } else if ans.is_ambiguous() {
+            warn!("{}: ambiguous type", path.display());
+            for mt in all {
+                println!("{}: {}", path.display(), mt);
+            }
         }
+        Ok(())
     }
 }
 
