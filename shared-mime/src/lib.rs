@@ -7,6 +7,8 @@ pub mod query;
 pub mod record;
 #[cfg(feature = "xdg-runtime")]
 pub mod runtime;
+mod search_queue;
+mod strcache;
 
 use log::*;
 

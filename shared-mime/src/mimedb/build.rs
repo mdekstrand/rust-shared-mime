@@ -9,12 +9,15 @@ impl MimeDB {
     pub fn add_records(&mut self, records: Vec<MimeTypeRecord>) {
         self.sequence += 1;
         for rec in records {
-            let info = self.type_info.entry(rec.name.clone()).or_default();
+            let name = self.names.cache(&rec.name);
+            let info = self.type_info.entry(name).or_default();
             if let Some(desc) = rec.description {
                 info.description = Some(desc);
             }
-            info.aliases.extend(rec.aliases);
-            info.parents.extend(rec.superclasses);
+            info.aliases
+                .extend(rec.aliases.into_iter().map(|c| self.names.cache(c)));
+            info.parents
+                .extend(rec.superclasses.into_iter().map(|c| self.names.cache(c)));
             for glob in rec.globs {
                 let mut matcher = FileMatcher::new(glob.pattern);
                 if glob.case_sensitive {
