@@ -23,6 +23,16 @@ It consists of 3 pieces:
 > GPL-licensed (v2+). Binaries using the embedded shared MIME data must be
 > GPL-licensed.
 
+> [!NOTE]
+>
+> Aspects of this library's interface are inspired by [xdg-mime][], but all code
+> here is original.  I created this library because I wanted to be able to embed
+> the MIME data to facilitate single-binary deployment, and to add some
+> additional disambiguation logic to make the MIME type detection more useful in
+> a few edge cases.
+
+[xdg-mime]: https://github.com/ebassi/xdg-mime-rs
+
 ## Contributions
 
 The only GPL element is the embedded MIME database; source code is MIT-licensed.
