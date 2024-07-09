@@ -35,3 +35,21 @@ fn test_text_binary_subtype() {
     let db = embedded_mime_db();
     assert!(db.is_subtype("text/plain", "application/octet-stream"));
 }
+
+#[test]
+fn test_inode_not_subtype() {
+    let db = embedded_mime_db();
+    let inodes = [
+        "inode/blockdevice",
+        "inode/chardevice",
+        "inode/directory",
+        "inode/fifo",
+        "inode/mount-point",
+        "inode/socket",
+        "inode/symlink",
+    ];
+    for it in inodes {
+        assert!(!db.is_subtype(it, "text/plain"));
+        assert!(!db.is_subtype(it, "application/octet-stream"));
+    }
+}
