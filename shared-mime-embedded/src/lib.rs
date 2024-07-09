@@ -17,6 +17,11 @@ pub fn embedded_mime_db() -> MimeDB {
     let mut db = MimeDB::new();
     let recs: Vec<MimeTypeRecord> = from_bytes(EMBED_BYTES).expect("embedded data decode failed");
     db.add_records(recs);
+    debug!(
+        "loaded embedded MIME info with {} types and {} globs",
+        db.type_count(),
+        db.glob_count()
+    );
     db
 }
 
@@ -33,10 +38,17 @@ pub fn load_mime_db() -> Result<MimeDB, LoadError> {
     #[cfg(feature = "xdg-runtime")]
     {
         debug!("loading runtime MIME database");
+        let nt = db.type_count();
+        let ng = db.glob_count();
         match load_xdg_mime_info() {
             Ok(info) => db.add_shared_mime_info(info),
             Err(e) => warn!("error loading MIME info: {:?}", e),
         }
+        debug!(
+            "loaded shared MIME info with {} new types and {} new globs",
+            db.type_count() - nt,
+            db.glob_count() - ng
+        );
     }
 
     Ok(db)

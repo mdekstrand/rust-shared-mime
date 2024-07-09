@@ -42,6 +42,16 @@ impl MimeDB {
         }
     }
 
+    /// Get the number of known types.
+    pub fn type_count(&self) -> usize {
+        self.type_info.len()
+    }
+
+    /// Get the number of globs.
+    pub fn glob_count(&self) -> usize {
+        self.globs.len()
+    }
+
     pub fn add_records(&mut self, records: Vec<MimeTypeRecord>) {
         self.sequence += 1;
         for rec in records {

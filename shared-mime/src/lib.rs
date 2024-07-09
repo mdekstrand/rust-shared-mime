@@ -7,6 +7,8 @@ pub mod record;
 #[cfg(feature = "xdg-runtime")]
 pub mod runtime;
 
+use log::*;
+
 pub use error::LoadError;
 
 pub use answer::Answer;
@@ -26,5 +28,10 @@ pub fn load_mime_db() -> Result<MimeDB, LoadError> {
     let mut db = MimeDB::new();
     let info = load_xdg_mime_info()?;
     db.add_shared_mime_info(info);
+    debug!(
+        "loaded shared MIME info with {} types and {} globs",
+        db.type_count(),
+        db.glob_count()
+    );
     Ok(db)
 }
