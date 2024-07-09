@@ -1,5 +1,6 @@
 shared-mime-embedded — MIME type information embedded in-process
-Copyright (C) 2024 Michael D. Ekstrand
+Source code copyright (C) 2024 Michael D. Ekstrand
+MIME data copyright (C) FreeDesktop.org contributors
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
