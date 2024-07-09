@@ -90,7 +90,10 @@ impl MimeDB {
             }
         }
         let mut ambiguous = matches.len() > 1;
+        // TODO: disambiguate by match length
         if ambiguous {
+            // this is our own addition to the match logic
+            // if we have multiple matches, but one is the supertype of the others, use it
             debug!(
                 "{}: {} matches, sorting",
                 path.to_string_lossy(),
