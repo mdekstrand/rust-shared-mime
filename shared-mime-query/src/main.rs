@@ -73,9 +73,41 @@ pub struct MIMEActions {
     #[arg(long = "dump")]
     dump: bool,
 
+    /// Query information about a type.
+    #[arg(short = 'I', long = "type-info")]
+    type_info: Option<String>,
+
     /// Query the type of a file.
     #[arg(short = 'T', long = "type-of")]
     type_of: Option<PathBuf>,
+}
+
+fn main() -> Result<()> {
+    let cli = CLI::parse();
+    StdErrLog::new()
+        .verbosity(if cli.quiet {
+            1
+        } else {
+            cli.verbose as usize + 2
+        })
+        .init()
+        .expect("log setup error");
+
+    info!("CLI launching");
+    if cli.action.list_dirs {
+        cli.list_dirs()
+    } else if cli.action.compile {
+        cli.compile()
+    } else if cli.action.dump {
+        cli.dump()
+    } else if let Some(path) = &cli.action.type_of {
+        cli.type_of(path)
+    } else if let Some(typ) = &cli.action.type_info {
+        cli.type_info(typ)
+    } else {
+        error!("no specified action");
+        exit(2)
+    }
 }
 
 impl CLI {
@@ -184,6 +216,27 @@ impl CLI {
         Ok(out)
     }
 
+    fn type_info(&self, name: &str) -> Result<()> {
+        let db = self.load_db()?;
+        info!("looking up type information for {}", name);
+        if let Some(desc) = db.description(name) {
+            println!("description: {}", desc);
+        }
+        let aliases = db.aliases(name);
+        if !aliases.is_empty() {
+            println!("aliases: {}", aliases.join(", "))
+        }
+        let parents = db.parents(name);
+        if !parents.is_empty() {
+            println!("parents: {}", parents.join(", "))
+        }
+        println!("supertypes:");
+        for typ in db.supertypes(name) {
+            println!("- {}", typ);
+        }
+        Ok(())
+    }
+
     fn type_of(&self, path: &Path) -> Result<()> {
         let db = self.load_db()?;
         info!("looking up type for {}", path.display());
@@ -204,31 +257,5 @@ impl CLI {
             }
         }
         Ok(())
-    }
-}
-
-fn main() -> Result<()> {
-    let cli = CLI::parse();
-    StdErrLog::new()
-        .verbosity(if cli.quiet {
-            1
-        } else {
-            cli.verbose as usize + 2
-        })
-        .init()
-        .expect("log setup error");
-
-    info!("CLI launching");
-    if cli.action.list_dirs {
-        cli.list_dirs()
-    } else if cli.action.compile {
-        cli.compile()
-    } else if cli.action.dump {
-        cli.dump()
-    } else if let Some(path) = &cli.action.type_of {
-        cli.type_of(path)
-    } else {
-        error!("no specified action");
-        exit(2)
     }
 }
