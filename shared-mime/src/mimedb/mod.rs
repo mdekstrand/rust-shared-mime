@@ -77,6 +77,33 @@ impl MimeDB {
         false
     }
 
+    /// Get the description of a string.
+    pub fn description(&self, typ: &str) -> Option<&str> {
+        self.type_info
+            .get(typ)
+            .map(|ti| ti.description.as_ref())
+            .flatten()
+            .map(|s| s.as_str())
+    }
+
+    /// Get the aliases of a type.
+    pub fn aliases(&self, typ: &str) -> Vec<&str> {
+        if let Some(ti) = self.type_info.get(typ) {
+            ti.aliases.iter().map(|cs| cs.as_ref()).collect()
+        } else {
+            Vec::new()
+        }
+    }
+
+    /// Get the parents of a type.
+    pub fn parents(&self, typ: &str) -> Vec<&str> {
+        if let Some(ti) = self.type_info.get(typ) {
+            ti.parents.iter().map(|cs| cs.as_ref()).collect()
+        } else {
+            Vec::new()
+        }
+    }
+
     /// Get all known supertypes of the specified type (including itself).
     ///
     /// Types are in discovery order, so closer supertypes are at the beginning of the list.
@@ -113,8 +140,7 @@ impl MimeDB {
             types.push(self.names.cache("application/octet-stream"));
         }
 
-        // types
-        Vec::new()
+        types
     }
 
     /// Order two types, where a type is less than its supertypes
