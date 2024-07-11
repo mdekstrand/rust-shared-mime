@@ -16,7 +16,7 @@ pub use error::{LoadError, QueryError};
 
 pub use answer::Answer;
 pub use mimedb::MimeDB;
-pub use query::FileQuery;
+pub use query::{FileQuery, FileQueryBuilder};
 
 /// Load the MIME database.
 #[cfg(not(feature = "xdg-runtime"))]
