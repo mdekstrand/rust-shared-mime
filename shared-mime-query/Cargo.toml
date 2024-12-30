@@ -7,10 +7,10 @@ description = "Shared MIME DB query tool"
 authors = ["Michael Ekstrand <md@ekstrandom.net>"]
 
 [dependencies]
-shared-mime = { version = "0.1.0-alpha1", path = "../shared-mime", features = [
+shared-mime = { version = "0.1.0", path = "../shared-mime", features = [
   "xdg-runtime",
 ] }
-shared-mime-embedded = { version = "0.1.0-alpha1", path = "../shared-mime-embedded", optional = true, features = [
+shared-mime-embedded = { version = "0.1.0", path = "../shared-mime-embedded", optional = true, features = [
   "xdg-runtime",
 ] }
 log = "^0.4"
