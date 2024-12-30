@@ -1,6 +1,6 @@
 [package]
 name = "shared-mime"
-version = "0.1.0-alpha1"
+version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "Look up file types with the XDG Shared MIME database"

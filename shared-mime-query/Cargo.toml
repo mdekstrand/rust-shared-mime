@@ -1,6 +1,6 @@
 [package]
 name = "shared-mime-query"
-version = "0.1.0-alpha1"
+version = "0.1.0"
 edition = "2021"
 license = "MIT OR GPL-2.0-or-later"
 description = "Shared MIME DB query tool"

@@ -428,7 +428,7 @@ dependencies = [
 
 [[package]]
 name = "shared-mime"
-version = "0.1.0-alpha1"
+version = "0.1.0"
 dependencies = [
  "log",
  "quick-xml",
@@ -438,7 +438,7 @@ dependencies = [
 
 [[package]]
 name = "shared-mime-embedded"
-version = "0.1.0-alpha1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "log",
@@ -448,7 +448,7 @@ dependencies = [
 
 [[package]]
 name = "shared-mime-query"
-version = "0.1.0-alpha1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
