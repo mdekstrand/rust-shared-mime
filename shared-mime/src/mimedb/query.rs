@@ -38,6 +38,12 @@ fn type_for_meta(meta: &Metadata) -> MetaAnswer {
     MetaAnswer::File(meta.size())
 }
 
+#[derive(Clone, Copy, Debug)]
+struct Match<'a> {
+    mime: &'a str,
+    weight: i32,
+}
+
 impl MimeDB {
     /// Query the MIME database.
     pub fn query(&self, query: &FileQuery<'_>) -> Result<Answer<'_>, QueryError> {
@@ -92,26 +98,21 @@ impl MimeDB {
         let name = name.as_ref();
         let display = name.to_string_lossy();
         debug!("looking up filename {}", display);
-        let mut sw = None;
         let mut matches = Vec::new();
         let pbs = name.as_encoded_bytes();
         for glob in self.globs.iter() {
-            if let Some((s, w)) = sw {
-                if s > glob.sequence || w > glob.weight {
-                    // done searching
-                    break;
-                }
-            }
             if glob.matcher.matches(pbs) {
-                sw = Some((glob.sequence, glob.weight));
-                matches.push(glob.mimetype.as_str());
+                matches.push(Match {
+                    mime: glob.mimetype.as_str(),
+                    weight: glob.weight,
+                });
             }
         }
         let ambiguous = self.coalesce_fn_matches(&display, &mut matches);
-        Answer::new(matches, ambiguous)
+        Answer::new(matches.into_iter().map(|m| m.mime).collect(), ambiguous)
     }
 
-    fn coalesce_fn_matches(&self, name: &str, matches: &mut Vec<&str>) -> bool {
+    fn coalesce_fn_matches(&self, name: &str, matches: &mut Vec<Match>) -> bool {
         let mut ambiguous = matches.len() > 1;
         // TODO: prefer matching literals
         // TODO: disambiguate by match length
@@ -120,13 +121,22 @@ impl MimeDB {
             // if we have multiple matches, but one is the supertype of the others, use it
             debug!("{}: {} matches, sorting", name, matches.len());
             // put supertype first
-            matches.sort_by(|a, b| self.compare_types(a, b).reverse());
+            matches.sort_by(|a, b| {
+                self.compare_types(a.mime, b.mime)
+                    .reverse()
+                    .then_with(|| a.weight.cmp(&b.weight).reverse())
+            });
             let root = matches[0];
-            ambiguous = !matches[1..].iter().all(|t| self.is_subtype(t, root));
+            ambiguous = !matches[1..]
+                .iter()
+                .all(|m| self.is_subtype(m.mime, root.mime));
+            if matches[1..].iter().any(|m| root.weight > m.weight) {
+                ambiguous = false;
+            }
             if ambiguous {
                 debug!("{}: ambiguous match", name)
             } else {
-                debug!("{}: best match {}", name, root)
+                debug!("{}: best match {}", name, root.mime)
             }
         }
         ambiguous

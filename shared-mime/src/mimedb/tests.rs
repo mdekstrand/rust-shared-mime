@@ -3,10 +3,9 @@ use {
     crate::record::{GlobRule, MimeTypeRecord},
 };
 
-// FIXME: weight is disregarded when coalescing matches
+// Weight should be considered when coalescing matches
 #[test]
-#[should_panic]
-fn test_weight_coalesce() {
+fn test_coalesce_weight() {
     let mut db = MimeDB::default();
     db.add_records(vec![MimeTypeRecord {
         name: "application/x-pagemaker".into(),
