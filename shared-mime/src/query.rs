@@ -36,7 +36,7 @@ impl<'name> FileQuery<'name> {
         FileQuery::builder().filename(name).build()
     }
 
-    pub fn for_path(path: &'name Path) -> Result<FileQuery, QueryError> {
+    pub fn for_path(path: &'name Path) -> Result<FileQuery<'name>, QueryError> {
         let mut fqb = Self::builder();
 
         if let Some(name) = path.file_name() {
