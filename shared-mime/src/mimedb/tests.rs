@@ -6,7 +6,7 @@ use {
 // Weight should be considered when coalescing matches
 #[test]
 fn test_coalesce_weight() {
-    let mut db = MimeDB::default();
+    let mut db = MimeDB::new();
     db.add_records(vec![MimeTypeRecord {
         name: "application/x-pagemaker".into(),
         description: None,
