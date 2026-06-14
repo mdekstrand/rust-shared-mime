@@ -4,17 +4,12 @@ use std::fmt::{Debug, Display};
 use std::{borrow::Borrow, cell::RefCell, collections::HashSet, hash::Hash, ops::Deref, rc::Rc};
 
 /// Cache to reduce duplicated strings in memory.
+#[derive(Default)]
 pub struct StringCache {
     cache: RefCell<HashSet<CachedString>>,
 }
 
 impl StringCache {
-    pub fn new() -> StringCache {
-        StringCache {
-            cache: RefCell::new(HashSet::new()),
-        }
-    }
-
     pub fn cache<S: AsRef<str>>(&self, string: S) -> CachedString {
         // slightly inefficient to search up to 3 times, but keeps borrow checker happy
         let cache = self.cache.borrow();

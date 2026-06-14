@@ -11,6 +11,7 @@ use crate::{
 };
 
 /// Hold MIME data and facilitate  file type guessing.
+#[derive(Default)]
 pub struct MimeDB {
     names: StringCache,
     type_info: HashMap<CachedString, TypeInfo>,
@@ -36,12 +37,7 @@ struct GlobRule {
 impl MimeDB {
     /// construct a new, empty MIME database.
     pub fn new() -> MimeDB {
-        MimeDB {
-            names: StringCache::new(),
-            type_info: HashMap::new(),
-            sequence: 0,
-            globs: Vec::new(),
-        }
+        MimeDB::default()
     }
 
     /// Get the number of known types.

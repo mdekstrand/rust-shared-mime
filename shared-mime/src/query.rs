@@ -18,6 +18,7 @@ pub struct FileQuery<'a> {
 }
 
 /// Builder for [FileQuery].
+#[derive(Default)]
 pub struct FileQueryBuilder<'name> {
     /// The file's name.
     filename: Option<&'name OsStr>,
@@ -59,10 +60,7 @@ impl<'name> FileQuery<'name> {
 
 impl FileQueryBuilder<'static> {
     pub fn new() -> FileQueryBuilder<'static> {
-        FileQueryBuilder {
-            filename: None,
-            metadata: None,
-        }
+        FileQueryBuilder::default()
     }
 }
 
