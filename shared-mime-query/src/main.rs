@@ -73,6 +73,10 @@ pub struct MIMEActions {
     #[arg(long = "dump")]
     dump: bool,
 
+    /// Dump the package files specified by -p
+    #[arg(long = "dump-packages")]
+    dump_packages: bool,
+
     /// Query information about a type.
     #[arg(short = 'I', long = "type-info")]
     type_info: Option<String>,
@@ -100,6 +104,8 @@ fn main() -> Result<()> {
         cli.compile()
     } else if cli.action.dump {
         cli.dump()
+    } else if cli.action.dump_packages {
+        cli.dump_packages()
     } else if let Some(path) = &cli.action.type_of {
         cli.type_of(path)
     } else if let Some(typ) = &cli.action.type_info {
@@ -179,6 +185,14 @@ impl CLI {
                     }
                 }
             }
+        }
+        Ok(())
+    }
+
+    fn dump_packages(&self) -> Result<()> {
+        for path in &self.pkg_files {
+            let pkg = parse_mime_package(path)?;
+            println!("package {path:?}: {pkg:#?}");
         }
         Ok(())
     }
