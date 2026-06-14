@@ -45,7 +45,7 @@ impl<'name> FileQuery<'name> {
         }
 
         trace!("{}: looking up metadata", path.display());
-        match fs::metadata(&path) {
+        match fs::metadata(path) {
             Ok(meta) => fqb = fqb.metadata(meta),
             Err(e) if e.kind() == ErrorKind::NotFound => {
                 trace!("{}: file not found", path.display());

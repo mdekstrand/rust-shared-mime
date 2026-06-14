@@ -47,7 +47,7 @@ impl CachedString {
     }
 
     fn as_str(&self) -> &str {
-        &*self.string
+        &self.string
     }
 }
 

@@ -67,7 +67,7 @@ impl MatchRule {
     pub fn matches_with_case(&self, path: &[u8]) -> bool {
         match self {
             MatchRule::Literal(lit) => lit == path,
-            MatchRule::Suffix(sfx) => path.ends_with(&sfx),
+            MatchRule::Suffix(sfx) => path.ends_with(sfx),
             MatchRule::Pattern(pat) => seq_matches_with_case(pat, path),
         }
     }
