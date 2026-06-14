@@ -35,10 +35,10 @@ impl<T: Eq + Hash + Clone> SearchQueue<T> {
         self.queue.len()
     }
 
-    pub fn saw<Q: ?Sized>(&self, item: &Q) -> bool
+    pub fn saw<Q>(&self, item: &Q) -> bool
     where
         T: Borrow<Q>,
-        Q: Hash + Eq,
+        Q: ?Sized + Hash + Eq,
     {
         self.seen.contains(item)
     }
