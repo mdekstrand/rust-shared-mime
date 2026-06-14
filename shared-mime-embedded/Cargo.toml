@@ -5,6 +5,7 @@ edition = "2021"
 license = "GPL-2.0-or-later"
 description = "Embedded copy of FreeDesktop Shared MIME data"
 authors = ["Michael Ekstrand <md@ekstrandom.net>"]
+repository = "https://github.com/mdekstrand/rust-shared-mime"
 
 [dependencies]
 log = "^0.4"

@@ -5,6 +5,7 @@ edition = "2021"
 license = "MIT OR GPL-2.0-or-later"
 description = "Shared MIME DB query tool"
 authors = ["Michael Ekstrand <md@ekstrandom.net>"]
+repository = "https://github.com/mdekstrand/rust-shared-mime"
 
 [dependencies]
 shared-mime = { version = "0.1.0", path = "../shared-mime", features = [
