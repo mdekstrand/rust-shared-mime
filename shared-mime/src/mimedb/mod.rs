@@ -11,6 +11,7 @@ use crate::{
 };
 
 /// Hold MIME data and facilitate  file type guessing.
+#[derive(Default)]
 pub struct MimeDB {
     names: StringCache,
     type_info: HashMap<CachedString, TypeInfo>,
@@ -36,12 +37,7 @@ struct GlobRule {
 impl MimeDB {
     /// construct a new, empty MIME database.
     pub fn new() -> MimeDB {
-        MimeDB {
-            names: StringCache::new(),
-            type_info: HashMap::new(),
-            sequence: 0,
-            globs: Vec::new(),
-        }
+        MimeDB::default()
     }
 
     /// Get the number of known types.
@@ -63,9 +59,7 @@ impl MimeDB {
         let mut queue: SearchQueue<CachedString> = SearchQueue::new();
         queue.maybe_add(self.names.cache(typ));
         while let Some(q) = queue.get() {
-            if q == sup {
-                return true;
-            } else if sup == "text/plain" && q.starts_with("text/") {
+            if q == sup || sup == "text/plain" && q.starts_with("text/") {
                 return true;
             }
             if let Some(info) = self.type_info.get(&q) {
@@ -81,8 +75,7 @@ impl MimeDB {
     pub fn description(&self, typ: &str) -> Option<&str> {
         self.type_info
             .get(typ)
-            .map(|ti| ti.description.as_ref())
-            .flatten()
+            .and_then(|ti| ti.description.as_ref())
             .map(|s| s.as_str())
     }
 

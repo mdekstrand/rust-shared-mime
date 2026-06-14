@@ -127,7 +127,7 @@ impl CLI {
         }
 
         info!("loading runtime MIME database");
-        return Ok(load_xdg_mime_db()?);
+        Ok(load_xdg_mime_db()?)
     }
 
     fn list_dirs(&self) -> Result<()> {

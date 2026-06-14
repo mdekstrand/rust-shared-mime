@@ -25,12 +25,12 @@ impl<'a> Answer<'a> {
 
     /// Query whether this answer is definite (resolved to a single, known type).
     pub fn is_definite(&self) -> bool {
-        self.types.len() >= 1 && !self.ambiguous
+        !self.types.is_empty() && !self.ambiguous
     }
 
     /// Query whether this answer is unknown (no resulting types).
     pub fn is_unknown(&self) -> bool {
-        self.types.len() == 0
+        self.types.is_empty()
     }
 
     /// Query whether this answer is ambiguous (multiple matching types).

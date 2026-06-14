@@ -18,6 +18,7 @@ pub struct FileQuery<'a> {
 }
 
 /// Builder for [FileQuery].
+#[derive(Default)]
 pub struct FileQueryBuilder<'name> {
     /// The file's name.
     filename: Option<&'name OsStr>,
@@ -36,7 +37,7 @@ impl<'name> FileQuery<'name> {
         FileQuery::builder().filename(name).build()
     }
 
-    pub fn for_path(path: &'name Path) -> Result<FileQuery, QueryError> {
+    pub fn for_path(path: &'name Path) -> Result<FileQuery<'name>, QueryError> {
         let mut fqb = Self::builder();
 
         if let Some(name) = path.file_name() {
@@ -45,7 +46,7 @@ impl<'name> FileQuery<'name> {
         }
 
         trace!("{}: looking up metadata", path.display());
-        match fs::metadata(&path) {
+        match fs::metadata(path) {
             Ok(meta) => fqb = fqb.metadata(meta),
             Err(e) if e.kind() == ErrorKind::NotFound => {
                 trace!("{}: file not found", path.display());
@@ -59,10 +60,7 @@ impl<'name> FileQuery<'name> {
 
 impl FileQueryBuilder<'static> {
     pub fn new() -> FileQueryBuilder<'static> {
-        FileQueryBuilder {
-            filename: None,
-            metadata: None,
-        }
+        FileQueryBuilder::default()
     }
 }
 
