@@ -82,7 +82,7 @@ impl MimeInfoPackage {
 
 impl From<MimeType> for MimeTypeRecord {
     fn from(mime: MimeType) -> Self {
-        return MimeTypeRecord {
+        MimeTypeRecord {
             name: mime.name,
             description: mime
                 .elements
@@ -121,26 +121,26 @@ impl From<MimeType> for MimeTypeRecord {
                     _ => None,
                 })
                 .collect(),
-        };
+        }
     }
 }
 
 impl From<GlobElement> for GlobRule {
     fn from(glob: GlobElement) -> Self {
-        return GlobRule {
+        GlobRule {
             pattern: glob.pattern,
             weight: glob.weight.unwrap_or(50),
             case_sensitive: glob.case_sensitive,
-        };
+        }
     }
 }
 
 impl From<&GlobElement> for GlobRule {
     fn from(glob: &GlobElement) -> Self {
-        return GlobRule {
+        GlobRule {
             pattern: glob.pattern.clone(),
             weight: glob.weight.unwrap_or(50),
             case_sensitive: glob.case_sensitive,
-        };
+        }
     }
 }
