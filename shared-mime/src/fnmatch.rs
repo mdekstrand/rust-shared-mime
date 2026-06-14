@@ -107,9 +107,9 @@ fn seq_matches(pat: &[MatchElement], path: &[u8]) -> bool {
             }
             false
         }
-        [MatchElement::Wildcard, ..] => path.len() >= 1 && seq_matches(&pat[1..], &path[1..]),
+        [MatchElement::Wildcard, ..] => !path.is_empty() && seq_matches(&pat[1..], &path[1..]),
         [MatchElement::Range(s, e), ..] => {
-            path.len() >= 1
+            !path.is_empty()
                 && path[0].to_ascii_lowercase() >= s.to_ascii_lowercase()
                 && path[0].to_ascii_lowercase() <= e.to_ascii_lowercase()
                 && seq_matches(&pat[1..], &path[1..])
@@ -137,10 +137,10 @@ fn seq_matches_with_case(pat: &[MatchElement], path: &[u8]) -> bool {
             false
         }
         [MatchElement::Wildcard, ..] => {
-            path.len() >= 1 && seq_matches_with_case(&pat[1..], &path[1..])
+            !path.is_empty() && seq_matches_with_case(&pat[1..], &path[1..])
         }
         [MatchElement::Range(s, e), ..] => {
-            path.len() >= 1
+            !path.is_empty()
                 && path[0] >= *s
                 && path[0] <= *e
                 && seq_matches_with_case(&pat[1..], &path[1..])
@@ -179,7 +179,7 @@ fn parse_pattern(pattern: &[u8]) -> Vec<MatchElement> {
 }
 
 fn maybe_push_literal(elts: &mut Vec<MatchElement>, current: &mut Vec<u8>, n: usize) {
-    if current.len() > 0 {
+    if !current.is_empty() {
         elts.push(MatchElement::Literal(replace(
             current,
             Vec::with_capacity(n),
