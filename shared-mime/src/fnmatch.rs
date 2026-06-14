@@ -89,7 +89,7 @@ impl From<&str> for MatchRule {
 /// TODO: This is inefficient and recursive, can cause problems on very long
 /// paths and pathological patterns.
 fn seq_matches(pat: &[MatchElement], path: &[u8]) -> bool {
-    match &pat[..] {
+    match pat {
         [] => path.is_empty(),
         _ if pat.is_empty() => false,
         [MatchElement::Literal(lit)] => lit.eq_ignore_ascii_case(path),
@@ -118,7 +118,7 @@ fn seq_matches(pat: &[MatchElement], path: &[u8]) -> bool {
 }
 
 fn seq_matches_with_case(pat: &[MatchElement], path: &[u8]) -> bool {
-    match &pat[..] {
+    match pat {
         [] => path.is_empty(),
         _ if pat.is_empty() => false,
         [MatchElement::Literal(lit)] => lit == path,
