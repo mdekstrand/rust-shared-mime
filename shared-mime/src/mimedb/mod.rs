@@ -3,6 +3,8 @@ use std::{cmp::Ordering, collections::HashMap};
 
 mod build;
 mod query;
+#[cfg(test)]
+mod tests;
 
 use crate::{
     fnmatch::FileMatcher,
