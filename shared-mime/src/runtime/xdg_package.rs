@@ -38,9 +38,11 @@ pub enum MimeTypeElement {
     Alias(TypeRefElement),
     Acronym(String),
     ExpandedAcronym(String),
+    Icon(IconElement),
     GenericIcon,
     Magic,
     MagicDeleteall,
+    Match(MatchElement),
     Treemagic,
     #[serde(rename = "root-XML")]
     RootXML,
@@ -65,6 +67,24 @@ pub struct GlobElement {
     pub weight: Option<i32>,
     #[serde(rename = "@case-sensitive", default)]
     pub case_sensitive: bool,
+}
+
+/// Element that references another type.
+#[derive(Deserialize, Debug, Clone)]
+pub struct IconElement {
+    #[serde(rename = "@name")]
+    pub name: String,
+}
+
+/// Element that references another type.
+#[derive(Deserialize, Debug, Clone)]
+pub struct MatchElement {
+    #[serde(rename = "@type")]
+    pub match_type: String,
+    #[serde(rename = "@offset", default)]
+    pub offset: u64,
+    #[serde(rename = "@value", default)]
+    pub value: String,
 }
 
 /// Element that references another type.
