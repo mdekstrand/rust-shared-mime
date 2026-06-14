@@ -81,8 +81,7 @@ impl MimeDB {
     pub fn description(&self, typ: &str) -> Option<&str> {
         self.type_info
             .get(typ)
-            .map(|ti| ti.description.as_ref())
-            .flatten()
+            .and_then(|ti| ti.description.as_ref())
             .map(|s| s.as_str())
     }
 
