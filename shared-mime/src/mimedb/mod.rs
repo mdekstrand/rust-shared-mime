@@ -63,9 +63,7 @@ impl MimeDB {
         let mut queue: SearchQueue<CachedString> = SearchQueue::new();
         queue.maybe_add(self.names.cache(typ));
         while let Some(q) = queue.get() {
-            if q == sup {
-                return true;
-            } else if sup == "text/plain" && q.starts_with("text/") {
+            if q == sup || sup == "text/plain" && q.starts_with("text/") {
                 return true;
             }
             if let Some(info) = self.type_info.get(&q) {
