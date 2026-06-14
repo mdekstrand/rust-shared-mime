@@ -18,7 +18,7 @@ impl StringCache {
     pub fn cache<S: AsRef<str>>(&self, string: S) -> CachedString {
         // slightly inefficient to search up to 3 times, but keeps borrow checker happy
         let cache = self.cache.borrow();
-        if let Some(cached) = cache.get(string.as_ref()).clone() {
+        if let Some(cached) = cache.get(string.as_ref()) {
             return cached.clone();
         }
         drop(cache);
